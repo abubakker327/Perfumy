@@ -1,62 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reestar</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
 </head>
+
 <body>
-    <div class="header">
-<h1>Reestar</h1>
-<ul>
-    <li>Home |</li>
-    <li>Receipe |</li>
-    <li>Contact</li>
-</ul>
+
+    <style>
+        .box {
+            background-color: green;
+            height: 200px;
+        }
+
+        .cards {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+        }
+
+        .footer {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .card1 {
+            background-color: aqua;
+            height: 200px;
+            margin: 5px;
+            width: 413px;
+        }
+
+        .box1 {
+            background-color: gray;
+            height: 150px;
+            margin: 5px;
+            width: 100%;
+            flex-basis: 20%;
+        }
+
+        @media screen and (max-width:600px) {
+            .cards {
+                display: flex;
+                flex-direction: column;
+                height: 250px;
+
+            }
+
+            .card1 {
+                background-color: aqua;
+                height: 200px;
+                margin: 5px;
+                width: 100%;
+            }
+
+            .box1 {
+                background-color: gray;
+                height: 80px;
+                margin: 5px;
+                flex-basis: 40%;
+                width: 100%
+            }
+
+            .box {
+                background-color: green;
+                height: 100px;
+            }
+        }
+
+        @media screen and (max-width:400px) {
+            .box1 {
+                background-color: gray;
+                height: 100px;
+                margin: 5px;
+                width: 100%;
+                flex-basis: 100%;
+            }
+
+            .card1 {
+                background-color: aqua;
+                height: 250px;
+                margin: 5px;
+                width: 100%;
+            }
+        }
+    </style>
+
+    <div class="hero">
+        <div class="box"></div>
     </div>
 
-    <div class="product">
-<div class="box">
-<img src="C:\Users\Noor\Pictures\Screenshots\Screenshot 2025-11-04 161445.png">
-<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque omnis repellat architecto eius iusto hic vel tenetur voluptatibus tempora nobis.</p>
-<div class="button">Order Now</div>
-</div>
-
-<div class="box">
-<img src="C:\Users\Noor\Pictures\Screenshots\Screenshot 2025-11-04 161445.png">
-<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque omnis repellat architecto eius iusto hic vel tenetur voluptatibus tempora nobis.</p>
-<div class="button">Order Now</div>
-</div>
-
-<div class="box">
-<img src="C:\Users\Noor\Pictures\Screenshots\Screenshot 2025-11-04 161445.png">
-<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque omnis repellat architecto eius iusto hic vel tenetur voluptatibus tempora nobis.</p>
-<div class="button">Order Now</div>
-</div>
+    <div class="cards">
+        <div class="card1"></div>
+        <div class="card1"></div>
+        <div class="card1"></div>
     </div>
 
-    <div class="contact">
-<h1>Contact Us</h1>
-<div class="form">
-    <form>
-        <table>
-        <tr>
-            <td>Name:</td> <td> <input type="text" placeholder="Name"></td>
-        </tr>
-
-        <tr>
-            <td>Age:</td> <td> <input type="text" placeholder="Age"></td>
-        </tr>
-
-        <tr>
-            <td>Email:</td> <td> <input type="text" placeholder="Email"></td>
-        </tr>
-        </table>
-    </form>
-</div>
-<br>
-<div class="send">Send</div>
+    <div class="footer">
+        <div class="box1"></div>
+        <div class="box1"></div>
+        <div class="box1"></div>
+        <div class="box1"></div>
     </div>
 </body>
+
 </html>
