@@ -3,198 +3,349 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mini Add Calculator</title>
+  <title>Guess the Number</title>
+
+  <!-- Nice rounded font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    /* Basic page layout */
     :root{
-      --bg: #0f1724;
-      --card: #0b1220;
-      --accent: #7c5cff;
-      --muted: #94a3b8;
-      --text: #e6eef8;
+      --bg-1: #0f1724;         /* deep */
+      --bg-2: #061023;         /* darker */
+      --card: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.6);
+      --accent-a: #7c5cff;
+      --accent-b: #5aa6ff;
+      --accent-c: #ff7ab6;
+      --glass: rgba(255,255,255,0.03);
+      --success: #8ef29a;
+      --danger: #ffb4b4;
+      --radius: 14px;
+      --shadow-lg: 0 18px 50px rgba(2,6,23,0.7);
+      --shadow-sm: 0 6px 20px rgba(2,6,23,0.45);
     }
 
     *{box-sizing: border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      min-height:100vh;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.12), transparent 6%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(90,166,255,0.08), transparent 6%),
+                  linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      color: #e6eef8;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(135deg, #071124 0%, #0b2236 100%);
-      color:var(--text);
-      padding:24px;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
 
+    /* container card */
     .card{
       width:100%;
-      max-width:420px;
+      max-width:520px;
+      border-radius:var(--radius);
+      padding:28px;
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:14px;
-      padding:22px;
-      box-shadow: 0 10px 30px rgba(3,6,23,0.6);
+      box-shadow: var(--shadow-lg);
       border: 1px solid rgba(255,255,255,0.04);
+      position:relative;
+      overflow:hidden;
     }
 
+    /* decorative floating blobs */
+    .card::before,
+    .card::after{
+      content: "";
+      position: absolute;
+      filter: blur(60px);
+      opacity: 0.6;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+    .card::before{
+      width:320px;height:320px;
+      background: radial-gradient(circle at 30% 30%, var(--accent-a), transparent 40%);
+      right: -60px;
+      top: -90px;
+    }
+    .card::after{
+      width:260px;height:260px;
+      background: radial-gradient(circle at 70% 70%, var(--accent-b), transparent 40%);
+      left:-80px;
+      bottom:-80px;
+    }
+
+    header{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:16px;
+    }
+    .logo{
+      width:52px;
+      height:52px;
+      border-radius:12px;
+      background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      color:white;
+      box-shadow: 0 8px 30px rgba(92,64,255,0.22);
+      transform: translateZ(0);
+    }
     h1{
-      margin:0 0 14px 0;
+      margin:0;
       font-size:20px;
       letter-spacing:0.2px;
     }
+    p.lead{
+      margin:4px 0 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
 
-    .row{
+    /* form area */
+    .form{
       display:flex;
       gap:12px;
-      margin-bottom:12px;
+      align-items:center;
+      margin-top:8px;
+      margin-bottom:14px;
     }
 
     input[type="number"]{
       flex:1;
       padding:12px 14px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.02);
-      color:var(--text);
-      font-size:16px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.04);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--text, #e6eef8);
       outline:none;
-      transition: box-shadow .15s, transform .08s;
+      font-size:15px;
+      transition: box-shadow .18s ease, transform .08s ease, border-color .12s ease;
+      -webkit-appearance: none;
+      appearance: none;
     }
+    input[type="number"]::placeholder{ color: rgba(230,238,248,0.38); }
+
     input[type="number"]:focus{
-      box-shadow: 0 6px 18px rgba(124,92,255,0.12);
-      transform: translateY(-1px);
-      border-color: rgba(124,92,255,0.6);
+      box-shadow: 0 10px 30px rgba(90,166,255,0.12);
+      border-color: rgba(90,166,255,0.45);
+      transform: translateY(-2px);
     }
 
+    /* buttons */
     .controls{
       display:flex;
-      gap:10px;
+      gap:12px;
       margin-bottom:12px;
     }
-
-    button{
-      padding:10px 14px;
-      border-radius:10px;
-      border: none;
+    .btn{
+      padding:11px 16px;
+      border-radius:12px;
+      border:none;
       font-weight:600;
       cursor:pointer;
-      transition: transform .08s, box-shadow .08s;
-    }
-
-    .btn-primary{
-      background: linear-gradient(90deg,var(--accent), #5aa6ff);
-      color: white;
-      flex:1;
-      box-shadow: 0 6px 18px rgba(124,92,255,0.16);
-    }
-    .btn-primary:active{ transform:translateY(1px) }
-    .btn-secondary{
-      background: transparent;
-      border:1px solid rgba(255,255,255,0.06);
-      color:var(--muted);
-      min-width:92px;
-    }
-
-    #result{
-      margin:0;
-      padding:12px;
-      border-radius:10px;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.03);
-      font-size:18px;
-      text-align:center;
-      color:var(--text);
-      min-height:46px;
-      display:flex;
+      transition: transform .08s ease, box-shadow .12s ease, opacity .12s;
+      display:inline-flex;
+      gap:8px;
       align-items:center;
       justify-content:center;
     }
 
-    .error{
-      color:#ffb4b4;
-      font-size:13px;
-      margin-top:8px;
-      text-align:left;
+    .btn-check{
+      background: linear-gradient(90deg,var(--accent-a), var(--accent-b));
+      color:white;
+      box-shadow: 0 10px 30px rgba(92,64,255,0.18);
+    }
+    .btn-check:hover{ transform: translateY(-4px) scale(1.01); box-shadow: 0 18px 45px rgba(92,64,255,0.22); }
+    .btn-check:active{ transform: translateY(-1px); }
+
+    .btn-reset{
+      background: transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.04);
+      min-width:92px;
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-reset:hover{ transform: translateY(-3px); opacity:0.98; }
+
+    /* result & score */
+    .row-meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:8px;
     }
 
-    /* small screens */
-    @media (max-width:420px){
-      .row{flex-direction:column}
-      .controls{flex-direction:column}
-      .btn-primary{width:100%}
+    #result{
+      padding:14px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.014), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      min-height:52px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:600;
+      letter-spacing:0.2px;
+      color:var(--muted);
+      transition: transform .12s ease, box-shadow .12s ease, color .12s ease, background .12s ease;
+    }
+
+    /* success/wrong states (JavaScript will set classes) */
+    .is-success{
+      color: #02280f;
+      background: linear-gradient(90deg, rgba(142,242,154,0.18), rgba(124,92,255,0.02));
+      border: 1px solid rgba(142,242,154,0.12);
+      box-shadow: 0 12px 30px rgba(142,242,154,0.08);
+      transform: translateY(-2px);
+    }
+    .is-wrong{
+      color: #2a0b0b;
+      background: linear-gradient(90deg, rgba(255,180,180,0.08), rgba(255,122,122,0.02));
+      border: 1px solid rgba(255,180,180,0.12);
+      box-shadow: 0 12px 30px rgba(255,122,122,0.06);
+      transform: translateY(-2px);
+    }
+
+    .score-badge{
+      padding:8px 12px;
+      border-radius:999px;
+      background: linear-gradient(90deg,var(--accent-c), var(--accent-a));
+      color:white;
+      font-weight:700;
+      box-shadow: 0 10px 30px rgba(255,122,182,0.12);
+      min-width:110px;
+      text-align:center;
+    }
+
+    /* small helper text */
+    .hint{
+      margin-top:8px;
+      color: rgba(230,238,248,0.45);
+      font-size:13px;
+      text-align:center;
+    }
+
+    /* responsive */
+    @media (max-width:520px){
+      .card{ padding:18px }
+      .form{ flex-direction:column; align-items:stretch }
+      .controls{ flex-direction:column }
+      .score-badge{ width:100% }
     }
   </style>
 </head>
 <body>
-  <div class="card" role="region" aria-label="Simple adder">
-    <h1>Mini Add Calculator</h1>
 
-    <div class="row" aria-hidden="false">
-      <input id="num1" type="number" placeholder="Enter first number" aria-label="First number" />
-      <input id="num2" type="number" placeholder="Enter second number" aria-label="Second number" />
+  <div class="card" role="region" aria-label="Guess the number game">
+    <header>
+      <div class="logo">G</div>
+      <div>
+        <h1>Guess the Number</h1>
+        <p class="lead">Pick a number between <strong>1</strong> and <strong>10</strong>. Try to guess the secret!</p>
+      </div>
+    </header>
+
+    <!-- inputs -->
+    <div class="form" role="form" aria-label="Guess form">
+      <input id="guessnumber" type="number" min="1" max="10" placeholder="Enter a number (1–10)">
     </div>
 
-    <div class="controls">
-      <button class="btn-primary" id="addBtn">Add</button>
-      <button class="btn-secondary" id="clearBtn">Clear</button>
+    <div class="row-meta">
+      <div class="controls" style="margin:0;">
+        <button class="btn btn-check" id="checkBtn">Check</button>
+        <button class="btn btn-reset" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="score-badge" id="score">Score: 10</div>
     </div>
 
-    <p id="result" aria-live="polite">Result</p>
-    <div id="error" class="error" aria-atomic="true"></div>
+    <div id="result" aria-live="polite">You are Wrong/Right</div>
+
+    <p class="hint">Tip: Use the <kbd>Enter</kbd> key to check. Good luck!</p>
   </div>
 
   <script>
-    // Grab elements
-    const box1 = document.getElementById('num1');
-    const box2 = document.getElementById('num2');
-    const result = document.getElementById('result');
-    const error = document.getElementById('error');
-    const addBtn = document.getElementById('addBtn');
-    const clearBtn = document.getElementById('clearBtn');
+    // your original JS (slightly adapted to work with the new buttons and classes)
+    var guessnumber = document.getElementById("guessnumber");
+    var result = document.getElementById("result");
+    var score = document.getElementById("score");
+    var checkBtn = document.getElementById("checkBtn");
+    var resetBtn = document.getElementById("resetBtn");
 
-    // Function to show error messages
-    function showError(msg) {
-      error.textContent = msg;
-      result.textContent = "Result";
-      // remove error after 3s
-      if (msg) setTimeout(()=> error.textContent = '', 3000);
+    var randomnumber = Math.floor(Math.random() * 10) + 1;
+    var totalscore = 10;
+
+    function setResultText(text, state) {
+      result.textContent = text;
+      result.classList.remove('is-success','is-wrong');
+      if (state === 'success') result.classList.add('is-success');
+      else if (state === 'wrong') result.classList.add('is-wrong');
     }
 
-    // Add button click
-    addBtn.addEventListener('click', () => {
-      // Convert values to numbers (handles empty fields to NaN)
-      const a = Number(box1.value);
-      const b = Number(box2.value);
-
-      // Validate: check inputs are not empty and are valid numbers
-      if (box1.value.trim() === '' || box2.value.trim() === '') {
-        showError('Please enter both numbers.');
+    function check() {
+      var enterednumber = Number(guessnumber.value);
+      if (guessnumber.value.trim() === "" || Number.isNaN(enterednumber)) {
+        setResultText("Please enter a number between 1 and 10.", 'wrong');
         return;
       }
-      if (Number.isNaN(a) || Number.isNaN(b)) {
-        showError('Please enter valid numeric values.');
+      if (enterednumber < 1 || enterednumber > 10) {
+        setResultText("Number must be 1 to 10.", 'wrong');
         return;
       }
 
-      const total = a + b;
-      result.textContent = total;
+      if (randomnumber === enterednumber) {
+        console.log("You are Right");
+        setResultText("You are Right! 🎉", 'success');
+        // optional: stop further guessing by disabling input and button
+        guessnumber.disabled = true;
+        checkBtn.disabled = true;
+      } else {
+        totalscore = totalscore - 1;
+        score.textContent = "Score: " + totalscore;
+        setResultText("You are Wrong. Try again!", 'wrong');
+        console.log("You are Wrong");
+        // if score hits 0, reveal number and disable
+        if (totalscore <= 0) {
+          setResultText("Game over! The number was " + randomnumber + ".", 'wrong');
+          guessnumber.disabled = true;
+          checkBtn.disabled = true;
+        }
+      }
+      guessnumber.value = "";
+      guessnumber.focus();
+    }
+
+    function resetGame() {
+      randomnumber = Math.floor(Math.random() * 10) + 1;
+      totalscore = 10;
+      score.textContent = "Score: " + totalscore;
+      setResultText("You are Wrong/Right");
+      guessnumber.disabled = false;
+      checkBtn.disabled = false;
+      guessnumber.value = "";
+      guessnumber.focus();
+      console.log('New secret:', randomnumber);
+    }
+
+    // wire up buttons
+    checkBtn.addEventListener('click', check);
+    resetBtn.addEventListener('click', resetGame);
+
+    // allow Enter key to check
+    guessnumber.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') check();
     });
 
-    // Clear button resets everything
-    clearBtn.addEventListener('click', () => {
-      box1.value = '';
-      box2.value = '';
-      result.textContent = 'Result';
-      error.textContent = '';
-      box1.focus();
-    });
-
-    // Optional: allow pressing Enter in either input to perform addition
-    [box1, box2].forEach(input => {
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') addBtn.click();
-      });
-    });
+    // initially focus and log secret for debug
+    guessnumber.focus();
+    console.log('Secret number (debug):', randomnumber);
   </script>
 </body>
 </html>
