@@ -1,112 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mini Add Calculator</title>
+  <style>
+    /* Basic page layout */
+    :root{
+      --bg: #0f1724;
+      --card: #0b1220;
+      --accent: #7c5cff;
+      --muted: #94a3b8;
+      --text: #e6eef8;
+    }
+
+    *{box-sizing: border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg, #071124 0%, #0b2236 100%);
+      color:var(--text);
+      padding:24px;
+    }
+
+    .card{
+      width:100%;
+      max-width:420px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:22px;
+      box-shadow: 0 10px 30px rgba(3,6,23,0.6);
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    h1{
+      margin:0 0 14px 0;
+      font-size:20px;
+      letter-spacing:0.2px;
+    }
+
+    .row{
+      display:flex;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    input[type="number"]{
+      flex:1;
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+      color:var(--text);
+      font-size:16px;
+      outline:none;
+      transition: box-shadow .15s, transform .08s;
+    }
+    input[type="number"]:focus{
+      box-shadow: 0 6px 18px rgba(124,92,255,0.12);
+      transform: translateY(-1px);
+      border-color: rgba(124,92,255,0.6);
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    button{
+      padding:10px 14px;
+      border-radius:10px;
+      border: none;
+      font-weight:600;
+      cursor:pointer;
+      transition: transform .08s, box-shadow .08s;
+    }
+
+    .btn-primary{
+      background: linear-gradient(90deg,var(--accent), #5aa6ff);
+      color: white;
+      flex:1;
+      box-shadow: 0 6px 18px rgba(124,92,255,0.16);
+    }
+    .btn-primary:active{ transform:translateY(1px) }
+    .btn-secondary{
+      background: transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      min-width:92px;
+    }
+
+    #result{
+      margin:0;
+      padding:12px;
+      border-radius:10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.03);
+      font-size:18px;
+      text-align:center;
+      color:var(--text);
+      min-height:46px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .error{
+      color:#ffb4b4;
+      font-size:13px;
+      margin-top:8px;
+      text-align:left;
+    }
+
+    /* small screens */
+    @media (max-width:420px){
+      .row{flex-direction:column}
+      .controls{flex-direction:column}
+      .btn-primary{width:100%}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="card" role="region" aria-label="Simple adder">
+    <h1>Mini Add Calculator</h1>
 
-    <style>
-        .box {
-            background-color: green;
-            height: 200px;
-        }
-
-        .cards {
-            display: flex;
-            flex-direction: row;
-            flex-grow: 1;
-        }
-
-        .footer {
-            display: flex;
-            flex-direction: row;
-            flex-grow: 1;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-
-        .card1 {
-            background-color: aqua;
-            height: 200px;
-            margin: 5px;
-            width: 413px;
-        }
-
-        .box1 {
-            background-color: gray;
-            height: 150px;
-            margin: 5px;
-            width: 100%;
-            flex-basis: 20%;
-        }
-
-        @media screen and (max-width:600px) {
-            .cards {
-                display: flex;
-                flex-direction: column;
-                height: 250px;
-
-            }
-
-            .card1 {
-                background-color: aqua;
-                height: 200px;
-                margin: 5px;
-                width: 100%;
-            }
-
-            .box1 {
-                background-color: gray;
-                height: 80px;
-                margin: 5px;
-                flex-basis: 40%;
-                width: 100%
-            }
-
-            .box {
-                background-color: green;
-                height: 100px;
-            }
-        }
-
-        @media screen and (max-width:400px) {
-            .box1 {
-                background-color: gray;
-                height: 100px;
-                margin: 5px;
-                width: 100%;
-                flex-basis: 100%;
-            }
-
-            .card1 {
-                background-color: aqua;
-                height: 250px;
-                margin: 5px;
-                width: 100%;
-            }
-        }
-    </style>
-
-    <div class="hero">
-        <div class="box"></div>
+    <div class="row" aria-hidden="false">
+      <input id="num1" type="number" placeholder="Enter first number" aria-label="First number" />
+      <input id="num2" type="number" placeholder="Enter second number" aria-label="Second number" />
     </div>
 
-    <div class="cards">
-        <div class="card1"></div>
-        <div class="card1"></div>
-        <div class="card1"></div>
+    <div class="controls">
+      <button class="btn-primary" id="addBtn">Add</button>
+      <button class="btn-secondary" id="clearBtn">Clear</button>
     </div>
 
-    <div class="footer">
-        <div class="box1"></div>
-        <div class="box1"></div>
-        <div class="box1"></div>
-        <div class="box1"></div>
-    </div>
+    <p id="result" aria-live="polite">Result</p>
+    <div id="error" class="error" aria-atomic="true"></div>
+  </div>
+
+  <script>
+    // Grab elements
+    const box1 = document.getElementById('num1');
+    const box2 = document.getElementById('num2');
+    const result = document.getElementById('result');
+    const error = document.getElementById('error');
+    const addBtn = document.getElementById('addBtn');
+    const clearBtn = document.getElementById('clearBtn');
+
+    // Function to show error messages
+    function showError(msg) {
+      error.textContent = msg;
+      result.textContent = "Result";
+      // remove error after 3s
+      if (msg) setTimeout(()=> error.textContent = '', 3000);
+    }
+
+    // Add button click
+    addBtn.addEventListener('click', () => {
+      // Convert values to numbers (handles empty fields to NaN)
+      const a = Number(box1.value);
+      const b = Number(box2.value);
+
+      // Validate: check inputs are not empty and are valid numbers
+      if (box1.value.trim() === '' || box2.value.trim() === '') {
+        showError('Please enter both numbers.');
+        return;
+      }
+      if (Number.isNaN(a) || Number.isNaN(b)) {
+        showError('Please enter valid numeric values.');
+        return;
+      }
+
+      const total = a + b;
+      result.textContent = total;
+    });
+
+    // Clear button resets everything
+    clearBtn.addEventListener('click', () => {
+      box1.value = '';
+      box2.value = '';
+      result.textContent = 'Result';
+      error.textContent = '';
+      box1.focus();
+    });
+
+    // Optional: allow pressing Enter in either input to perform addition
+    [box1, box2].forEach(input => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') addBtn.click();
+      });
+    });
+  </script>
 </body>
-
 </html>
